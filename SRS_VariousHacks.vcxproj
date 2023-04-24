@@ -76,7 +76,7 @@
     <TargetExt>.asi</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\Games\SteamLibrary\steamapps\common\Street Racing Syndicate\Bin\scripts\</OutDir>
+    <OutDir>.\mod\bin\scripts</OutDir>
     <TargetName>StreetRacingSyndicate.VariousHacks</TargetName>
     <TargetExt>.asi</TargetExt>
   </PropertyGroup>

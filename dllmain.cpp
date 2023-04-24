@@ -83,7 +83,7 @@ void Init()
 {
 	CIniReader ini("StreetRacingSyndicate.VariousHacks.ini");
 
-	if (ini.ReadInteger("GENERAL", "CarReflections", 0) == 1)
+	if (ini.ReadInteger("GENERAL", "RoadCarReflections", 0) == 1)
 	{
 
 	}
