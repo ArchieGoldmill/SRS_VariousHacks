@@ -66,6 +66,8 @@ void InitCameraModes()
 	Game::AllowedCameraModes[2] = true;
 	Game::AllowedCameraModes[3] = true;
 	Game::AllowedCameraModes[18] = true;
+	Game::AllowedCameraModes[25] = true;
+	Game::AllowedCameraModes[30] = true;
 }
 
 void __declspec(naked) InitCameraModesCave()
@@ -85,7 +87,7 @@ void Init()
 
 	if (ini.ReadInteger("GENERAL", "RoadCarReflections", 0) == 1)
 	{
-
+		injector::WriteMemory<BYTE>(0x006834A7, 0, true);
 	}
 
 	CopCarInDealer = ini.ReadInteger("GENERAL", "CopCarInDealer", 0) == 1;
