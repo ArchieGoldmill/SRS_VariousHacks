@@ -23,7 +23,7 @@ A little collection of hacks and fixes for Street Racing Syndicate.
     <img src="https://cdn.discordapp.com/attachments/879671924941291600/1100134722610401290/image.png" width="250">
   </li>
   <li>
-    <div>More camera modes. Cycle through camera modes to get access (Default key 'C')</div>
+    <div>More camera modes. Cycle through camera modes to get access (Default key 'C').</div>
   </li>
   <li>
     <div>Removed timeout for the nos flame effect.</div>
