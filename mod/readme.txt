@@ -10,6 +10,8 @@ Features:
 - Open/Close your car's hood at any moment (Default key '1').
 - More camera modes. Cycle through camera modes to get access (Default key 'C').
 - Removed timeout for the nos flame effect.
+- Toggle draw HUD.
+- Set maximum respect to be earned per race.
 
 How to use:
 1. Extract the archive to the game directory (SteamLibrary\steamapps\common\Street Racing Syndicate).

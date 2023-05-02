@@ -2,7 +2,7 @@
 #include "IniReader/IniReader.h"
 #include "Injector/injector.hpp"
 
-int hk_ToggleHood;
+int hk_ToggleHood, hk_ToggleDrawHUD;
 bool ToggleHood = false, CopCarInDealer = false;
 
 namespace Game
@@ -14,6 +14,13 @@ namespace Game
 
 	bool* CopCarVisible = (bool*)0x007A557D;
 	bool* CopCarUnlocked = (bool*)0x007A5580;
+
+	int* MaxRespect1 = (int*)0x0053E917;
+	int* MaxRespect2 = (int*)0x0053E929;
+	int* MaxRespect3 = (int*)0x0053D1E8;
+	int* MaxRespect4 = (int*)0x0053D1EF;
+
+	bool* DrawHUD = (bool*)0x007D5CA0;
 
 	auto ProcessEngineAnimation = (void(__thiscall*)(void*, int))0x00541DF0;
 	auto SetEngineAnimationState = (void(__thiscall*)(void*, int))0x00541D20;
@@ -49,6 +56,11 @@ void MainLoop()
 	if (GetAsyncKeyState(hk_ToggleHood) & 1)
 	{
 		ToggleHood = !ToggleHood;
+	}
+
+	if (GetAsyncKeyState(hk_ToggleDrawHUD) & 1)
+	{
+		*Game::DrawHUD = !*Game::DrawHUD;
 	}
 
 	if (CopCarInDealer)
@@ -107,6 +119,12 @@ void Init()
 		injector::MakeJMP(0x00523659, InitCameraModesCave, true);
 	}
 
+	int MaxRespect = ini.ReadInteger("GENERAL", "MaxRespect", 250);
+	injector::WriteMemory(Game::MaxRespect1, MaxRespect, true);
+	injector::WriteMemory(Game::MaxRespect2, MaxRespect, true);
+	injector::WriteMemory(Game::MaxRespect3, MaxRespect, true);
+	injector::WriteMemory(Game::MaxRespect4, MaxRespect, true);
+
 	int nosColorRed = ini.ReadInteger("NOS_FLAME", "Red", 0);
 	injector::WriteMemory(0x006A6CD4, nosColorRed, true);
 
@@ -120,6 +138,7 @@ void Init()
 	injector::WriteMemory(0x006A6CBE, nosColorAlpha, true);
 
 	hk_ToggleHood = ini.ReadInteger("HOT_KEYS", "ToggleHood", 0);
+	hk_ToggleDrawHUD = ini.ReadInteger("HOT_KEYS", "ToggleDrawHUD", 0);
 	injector::MakeCALL(0x004044B8, MainLoop, true);
 }
 
