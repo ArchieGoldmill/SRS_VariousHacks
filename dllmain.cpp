@@ -3,7 +3,7 @@
 #include "Injector/injector.hpp"
 
 int hk_ToggleHood, hk_ToggleDrawHUD;
-bool ToggleHood = false, CopCarInDealer = false;
+bool ToggleHood = false, CopCarInDealer = false, ShowHiddenVinyl = false;
 
 namespace Game
 {
@@ -22,6 +22,7 @@ namespace Game
 
 	bool* DrawHUD = (bool*)0x007D5CA0;
 
+	auto SetShowHiddenVinyl = (void(__stdcall*)())0x005198B0;
 	auto ProcessEngineAnimation = (void(__thiscall*)(void*, int))0x00541DF0;
 	auto SetEngineAnimationState = (void(__thiscall*)(void*, int))0x00541D20;
 	auto IsEngineAnimationState = (bool(__thiscall*)(void*, int))0x0053F5D0;
@@ -67,6 +68,11 @@ void MainLoop()
 	{
 		*Game::CopCarUnlocked = true;
 		*Game::CopCarVisible = true;
+	}
+
+	if (ShowHiddenVinyl)
+	{
+		Game::SetShowHiddenVinyl();
 	}
 
 	__asm popad;
@@ -118,6 +124,14 @@ void Init()
 	{
 		injector::MakeJMP(0x00523659, InitCameraModesCave, true);
 	}
+
+	if (ini.ReadInteger("GENERAL", "NoDecalRestrictions", 0) == 1)
+	{
+		injector::WriteMemory<BYTE>(0x0055E256, 0xEB, true);
+		injector::WriteMemory(0x0055EA1B, 0x0055EA1B, true); // Do not remove decals when brand is not installed
+	}
+
+	ShowHiddenVinyl = ini.ReadInteger("GENERAL", "ShowHiddenVinyl", 0) == 1;
 
 	int MaxRespect = ini.ReadInteger("GENERAL", "MaxRespect", 250);
 	injector::WriteMemory(Game::MaxRespect1, MaxRespect, true);

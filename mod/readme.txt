@@ -12,6 +12,8 @@ Features:
 - Removed timeout for the nos flame effect.
 - Toggle draw HUD.
 - Set maximum respect to be earned per race.
+- Remove brand decals restrictions.
+- Show the hidden vinyl.
 
 How to use:
 1. Extract the archive to the game directory (SteamLibrary\steamapps\common\Street Racing Syndicate).
