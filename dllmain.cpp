@@ -99,6 +99,14 @@ void __declspec(naked) InitCameraModesCave()
 	}
 }
 
+void __cdecl ConsolePrint(const char* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	vfprintf(stdout, format, args);
+	va_end(args);
+}
+
 void Init()
 {
 	CIniReader ini("StreetRacingSyndicate.VariousHacks.ini");
@@ -128,7 +136,22 @@ void Init()
 	if (ini.ReadInteger("GENERAL", "NoDecalRestrictions", 0) == 1)
 	{
 		injector::WriteMemory<BYTE>(0x0055E256, 0xEB, true);
-		injector::WriteMemory(0x0055EA1B, 0x0055EA1B, true); // Do not remove decals when brand is not installed
+	}
+
+	if (ini.ReadInteger("GENERAL", "NoEngineRestrictions", 0) == 1)
+	{
+		injector::WriteMemory<unsigned short>(0x0050ED7B, 0x01B0, true);
+	}
+
+	if (ini.ReadInteger("GENERAL", "Console", 0) == 1)
+	{
+		injector::MakeJMP(0x006227A0, ConsolePrint, true);
+
+		AllocConsole();
+		FILE* pfstdin;
+		FILE* pfstdout;
+		freopen_s(&pfstdout, "CONOUT$", "w", stdout);
+		freopen_s(&pfstdin, "CONIN$", "r", stdin);
 	}
 
 	ShowHiddenVinyl = ini.ReadInteger("GENERAL", "ShowHiddenVinyl", 0) == 1;
@@ -138,6 +161,9 @@ void Init()
 	injector::WriteMemory(Game::MaxRespect2, MaxRespect, true);
 	injector::WriteMemory(Game::MaxRespect3, MaxRespect, true);
 	injector::WriteMemory(Game::MaxRespect4, MaxRespect, true);
+
+	int NumPaintColors = ini.ReadInteger("GENERAL", "NumPaintColors", 21);
+	injector::WriteMemory(0x005CDA26, NumPaintColors * 20, true);
 
 	int nosColorRed = ini.ReadInteger("NOS_FLAME", "Red", 0);
 	injector::WriteMemory(0x006A6CD4, nosColorRed, true);
