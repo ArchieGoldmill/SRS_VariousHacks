@@ -7,8 +7,8 @@ bool ToggleHood = false, CopCarInDealer = false, ShowHiddenVinyl = false;
 
 namespace Game
 {
-	void** RaceCars = (void**)0x007708F4;
-	void** GarageCar = (void**)0x00791BC4;
+	auto RaceCars = (uint32_t**)0x007708F4;
+	auto GarageCar = (uint32_t**)0x00791BC4;
 
 	bool* AllowedCameraModes = (bool*)0x007D5C74;
 
@@ -28,9 +28,9 @@ namespace Game
 	auto IsEngineAnimationState = (bool(__thiscall*)(void*, int))0x0053F5D0;
 }
 
-void ProcessEngineAnimation(void* playerCar)
+void ProcessEngineAnimation(uint32_t* playerCar)
 {
-	if (playerCar)
+	if (playerCar && *playerCar == 0x0073B008)
 	{
 		Game::ProcessEngineAnimation(playerCar, 0);
 		if (!ToggleHood)
@@ -179,6 +179,7 @@ void Init()
 
 	hk_ToggleHood = ini.ReadInteger("HOT_KEYS", "ToggleHood", 0);
 	hk_ToggleDrawHUD = ini.ReadInteger("HOT_KEYS", "ToggleDrawHUD", 0);
+
 	injector::MakeCALL(0x004044B8, MainLoop, true);
 }
 
